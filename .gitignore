@@ -59,4 +59,6 @@ _deps
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake
 n
-data
+BINARY/
+open3d
+.vscode/

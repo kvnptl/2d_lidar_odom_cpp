@@ -13,6 +13,15 @@ int main(int argc, char const *argv[])
 
     dataset::LaserScanDataset pointcloud_set(filename);
 
-    viewer::viewCloud(pointcloud_set[0]);
+    auto first_scan = pointcloud_set[0];
+    auto second_scan = pointcloud_set[1];
+
+    viewer::viewCloud(first_scan);
+
+    // Get the size of the pointcloud set
+    std::cout << "Size of pointcloud set: " << pointcloud_set.size() << std::endl;
+
+    // Get the number of points in the first scan
+    std::cout << "Number of points in the first scan: " << first_scan.size() << std::endl;
     return 0;
 }

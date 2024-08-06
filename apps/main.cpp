@@ -6,7 +6,7 @@ int main(int argc, char const *argv[])
 {
     if (argc != 2)
     {
-        std::cerr << "[ERROR] Please provide the path to the root directory of the dataset" << std::endl;
+        std::cerr << "[ERROR] Please provide the path to the dataset directory" << std::endl;
         return 1;
     }
     const std::string &filename(argv[1]);

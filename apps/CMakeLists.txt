@@ -21,10 +21,18 @@ add_executable(kdtree kd_tree_scratch.cpp)
 target_link_libraries(kdtree PRIVATE dataloader viewer)
 target_compile_features(kdtree PRIVATE cxx_std_17)
 
-add_executable(main_kd_tree main_kd_tree.cpp)
-target_link_libraries(main_kd_tree PRIVATE dataloader viewer)
-target_compile_features(main_kd_tree PRIVATE cxx_std_17)
-
 add_executable(main_kd_tree_nanoflann main_kd_tree_nanoflann.cpp)
 target_link_libraries(main_kd_tree_nanoflann PRIVATE dataloader viewer)
 target_compile_features(main_kd_tree_nanoflann PRIVATE cxx_std_17)
+
+add_executable(main_pt1_kd_tree main_pt1_kd_tree.cpp)
+target_link_libraries(main_pt1_kd_tree PRIVATE dataloader viewer)
+target_compile_features(main_pt1_kd_tree PRIVATE cxx_std_17)
+
+add_executable(main_pt2_error main_pt2_error.cpp)
+target_link_libraries(main_pt2_error PRIVATE dataloader viewer)
+target_compile_features(main_pt2_error PRIVATE cxx_std_17)
+
+add_executable(main_pt3_jacobian main_pt3_jacobian.cpp)
+target_link_libraries(main_pt3_jacobian PRIVATE dataloader viewer)
+target_compile_features(main_pt3_jacobian PRIVATE cxx_std_17)

@@ -44,3 +44,7 @@ target_compile_features(main_pt4_hessian PRIVATE cxx_std_17)
 add_executable(main_pt5_final main_pt5_final.cpp)
 target_link_libraries(main_pt5_final PRIVATE dataloader viewer)
 target_compile_features(main_pt5_final PRIVATE cxx_std_17)
+
+add_executable(main_pt5v1_final main_pt5v1_final.cpp)
+target_link_libraries(main_pt5v1_final PRIVATE dataloader viewer)
+target_compile_features(main_pt5v1_final PRIVATE cxx_std_17)

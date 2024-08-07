@@ -162,17 +162,17 @@ int main(int argc, char const *argv[])
             std::vector<std::pair<Vector2d, Vector2d>> correspondences; // Store pairs of source and nearest target points.
             std::vector<double> errors;                                 // To store the error for each correspondence.
             std::vector<Matrix<double, 2, 3>> jacobians;                // To store the Jacobian for each correspondence.
+            Matrix3d H = Matrix3d::Zero();
+            Vector3d b = Vector3d::Zero();
 
             for (const auto &source_point : source_scan)
             {
                 Vector2d transformed_point = R * source_point + t;
                 Vector2d nearest_target = tree.findNearest(transformed_point);
-                correspondences.push_back(std::make_pair(source_point, nearest_target));
+
                 double error = (transformed_point - nearest_target).norm();
                 errors.push_back(error);
 
-                // Jacobian calculation:
-                // Compute Rp_i + t
                 Vector2d transformed_source = R * source_point + t;
                 double x_hat = transformed_source[0];
                 double y_hat = transformed_source[1];
@@ -185,21 +185,10 @@ int main(int argc, char const *argv[])
                 J(1, 1) = 1;
                 J(1, 2) = x_hat; // Partial derivatives with respect to x, y, theta
 
-                jacobians.push_back(J);
-            }
+                Vector2d e = transformed_point - nearest_target;
 
-            // Now compute H and b for the least squares problem
-            Matrix3d H = Matrix3d::Zero();
-            Vector3d b = Vector3d::Zero();
-
-            for (size_t i = 0; i < correspondences.size(); ++i)
-            {
-                const Vector2d &p = correspondences[i].first;
-                const Vector2d &q = correspondences[i].second;
-                Vector2d e = R * p + t - q;
-
-                H += jacobians[i].transpose() * jacobians[i];
-                b += jacobians[i].transpose() * e;
+                H += J.transpose() * J;
+                b += J.transpose() * e;
             }
 
             // Solve for the perturbation delta_x using H and b

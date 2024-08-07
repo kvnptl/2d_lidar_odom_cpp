@@ -36,3 +36,11 @@ target_compile_features(main_pt2_error PRIVATE cxx_std_17)
 add_executable(main_pt3_jacobian main_pt3_jacobian.cpp)
 target_link_libraries(main_pt3_jacobian PRIVATE dataloader viewer)
 target_compile_features(main_pt3_jacobian PRIVATE cxx_std_17)
+
+add_executable(main_pt4_hessian main_pt4_hessian.cpp)
+target_link_libraries(main_pt4_hessian PRIVATE dataloader viewer)
+target_compile_features(main_pt4_hessian PRIVATE cxx_std_17)
+
+add_executable(main_pt5_final main_pt5_final.cpp)
+target_link_libraries(main_pt5_final PRIVATE dataloader viewer)
+target_compile_features(main_pt5_final PRIVATE cxx_std_17)

@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
     dataset::LaserScanDataset pointcloud_set(filename);
 
     auto first_scan = pointcloud_set[0];
-    auto second_scan = pointcloud_set[200];
+    auto second_scan = pointcloud_set[1];
 
     // viewer::viewCloud(first_scan);
 

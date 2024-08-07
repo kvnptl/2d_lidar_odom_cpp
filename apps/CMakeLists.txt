@@ -60,3 +60,7 @@ target_compile_features(main_pt6_2d_lidar_odom_nanoflann PRIVATE cxx_std_20)
 add_executable(main_pt6v2_2d_lidar_odom main_pt6v2_2d_lidar_odom.cpp)
 target_link_libraries(main_pt6v2_2d_lidar_odom PRIVATE dataloader viewer icp)
 target_compile_features(main_pt6v2_2d_lidar_odom PRIVATE cxx_std_20)
+
+add_executable(main_visualize main_visualize.cpp)
+target_link_libraries(main_visualize PRIVATE dataloader viewer icp)
+target_compile_features(main_visualize PRIVATE cxx_std_20)

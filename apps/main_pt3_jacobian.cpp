@@ -10,7 +10,6 @@
 using Eigen::Matrix2d;
 using Eigen::MatrixXd;
 using Eigen::Vector2d;
-using Eigen::Vector3d;
 
 // Class representing a node in the KD-Tree.
 // Each node contains a point in 2D space, and links to left and right child nodes.
@@ -115,16 +114,19 @@ int main(int argc, char const *argv[])
     std::vector<Vector2d> source_scan = pointcloud_set[1];
 
     // Get the size of the pointcloud set
-    std::cout << "Size of pointcloud set: " << pointcloud_set.size() << std::endl;
+    std::cout << "[INFO] Size of pointcloud set: " << pointcloud_set.size() << std::endl;
 
     // Get the number of points in the source scan
-    std::cout << "Number of points in the source scan: " << source_scan.size() << std::endl;
+    std::cout << "[INFO] Number of points in the source scan: " << source_scan.size() << std::endl;
 
     KDTree tree(target_scan);
 
     std::vector<std::pair<Vector2d, Vector2d>> correspondences; // Store pairs of source and nearest target points.
     std::vector<double> errors;                                 // To store the error for each correspondence.
-    std::vector<Matrix2d> jacobians;                            // To store the Jacobian for each correspondence.
+    std::vector<MatrixXd> jacobians;                            // To store the Jacobian for each correspondence.
+    // Assuming initial transformation is identity (R = I, t = 0)
+    MatrixXd R = MatrixXd::Identity(2, 2);
+    Vector2d t = Vector2d::Zero();
 
     for (const auto &source_point : source_scan)
     {
@@ -134,29 +136,29 @@ int main(int argc, char const *argv[])
         errors.push_back(error);
 
         // Jacobian calculation:
-        // For simplicity, assuming a planar movement with rotation around the Z-axis and translation.
-        Matrix2d J;
-        J(0, 0) = 1; // Partial derivative of x' with respect to dx (translation in x)
-        J(0, 1) = 0; // Partial derivative of x' with respect to dy
-        J(1, 0) = 0; // Partial derivative of y' with respect to dx
-        J(1, 1) = 1; // Partial derivative of y' with respect to dy
+        // Compute Rp_i + t
+        Vector2d transformed_source = R * source_point + t;
+        double x_hat = transformed_source[0];
+        double y_hat = transformed_source[1];
 
-        // Add the rotation component for the partial derivatives of x' and y' with respect to dtheta
-        double dx = source_point[0] - nearest_target[0];
-        double dy = source_point[1] - nearest_target[1];
-        J(0, 1) -= dy; // Adding negative since it's derivative of x with respect to dtheta.
-        J(1, 0) += dx; // Adding positive since it's derivative of y with respect to dtheta.
+        MatrixXd J(2, 3);
+        J(0, 0) = 1;
+        J(0, 1) = 0;
+        J(0, 2) = -y_hat; // Partial derivatives with respect to x, y, theta
+        J(1, 0) = 0;
+        J(1, 1) = 1;
+        J(1, 2) = x_hat; // Partial derivatives with respect to x, y, theta
 
         jacobians.push_back(J);
     }
 
     // Output results
-    std::cout << "Found " << correspondences.size() << " correspondences with the following errors and Jacobian matrices:" << std::endl;
-    for (size_t i = 0; i < errors.size(); ++i)
+    std::cout << "[INFO] Found " << correspondences.size() << " correspondences with the following errors and Jacobian matrices:" << std::endl;
+    for (size_t i = 0; i < errors.size() && i < 5; ++i)
     {
-        std::cout << "Correspondence " << i + 1 << ": Error = " << errors[i] << std::endl;
-        std::cout << "Jacobian:\n"
-                  << jacobians[i] << std::endl;
+        std::cout << "[INFO] Correspondence " << i + 1 << ": Error = " << errors[i] << std::endl;
+        std::cout << "[INFO] Jacobian: " << jacobians[i] << std::endl;
+        std::cout << std::endl;
     }
 
     return 0;

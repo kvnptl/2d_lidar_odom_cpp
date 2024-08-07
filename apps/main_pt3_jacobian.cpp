@@ -7,8 +7,8 @@
 #include <limits>
 #include <vector>
 
+using Eigen::Matrix;
 using Eigen::Matrix2d;
-using Eigen::MatrixXd;
 using Eigen::Vector2d;
 
 // Class representing a node in the KD-Tree.
@@ -123,9 +123,9 @@ int main(int argc, char const *argv[])
 
     std::vector<std::pair<Vector2d, Vector2d>> correspondences; // Store pairs of source and nearest target points.
     std::vector<double> errors;                                 // To store the error for each correspondence.
-    std::vector<MatrixXd> jacobians;                            // To store the Jacobian for each correspondence.
+    std::vector<Matrix<double, 2, 3>> jacobians;                // To store the Jacobian for each correspondence.
     // Assuming initial transformation is identity (R = I, t = 0)
-    MatrixXd R = MatrixXd::Identity(2, 2);
+    Matrix2d R = Matrix2d::Identity();
     Vector2d t = Vector2d::Zero();
 
     for (const auto &source_point : source_scan)
@@ -141,7 +141,7 @@ int main(int argc, char const *argv[])
         double x_hat = transformed_source[0];
         double y_hat = transformed_source[1];
 
-        MatrixXd J(2, 3);
+        Matrix<double, 2, 3> J;
         J(0, 0) = 1;
         J(0, 1) = 0;
         J(0, 2) = -y_hat; // Partial derivatives with respect to x, y, theta

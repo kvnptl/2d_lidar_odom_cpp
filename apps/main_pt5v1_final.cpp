@@ -128,7 +128,7 @@ int main(int argc, char const *argv[])
     dataset::LaserScanDataset pointcloud_set(filename);
 
     std::vector<Vector2d> target_scan = pointcloud_set[0];
-    std::vector<Vector2d> source_scan = pointcloud_set[200];
+    std::vector<Vector2d> source_scan = pointcloud_set[1];
 
     // viewer::viewCloud(target_scan);
     // viewer::viewCloud(source_scan);
@@ -139,7 +139,7 @@ int main(int argc, char const *argv[])
 
     KDTree tree(target_scan);
 
-    // Start with identity rotation and zero translation.
+    // Start with identity rotation and zero translation
     Matrix2d R = Matrix2d::Identity();
     Vector2d t = Vector2d::Zero();
 
@@ -177,9 +177,6 @@ int main(int argc, char const *argv[])
 
             jacobians.push_back(J);
         }
-
-        // Total number of correspondences
-        // cout << "[INFO] Total number of correspondences: " << correspondences.size() << endl;
 
         // Now compute H and b for the least squares problem
         Matrix3d H = Matrix3d::Zero();

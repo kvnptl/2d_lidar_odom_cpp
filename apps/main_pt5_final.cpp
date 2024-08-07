@@ -118,7 +118,11 @@ int main(int argc, char const *argv[])
     dataset::LaserScanDataset pointcloud_set(filename);
 
     std::vector<Vector2d> target_scan = pointcloud_set[0];
-    std::vector<Vector2d> source_scan = pointcloud_set[1];
+    std::vector<Vector2d> source_scan = pointcloud_set[200];
+
+    // viewer::viewCloud(target_scan);
+    // viewer::viewCloud(source_scan);
+    viewer::viewTwoClouds(target_scan, source_scan);
 
     // Get the size of the pointcloud set
     cout << "[INFO] Size of pointcloud set: " << pointcloud_set.size() << endl;
@@ -210,12 +214,15 @@ int main(int argc, char const *argv[])
         prev_error = mean_error;
     }
 
-    // Output the final transformation
-    cout << "[INFO] Final transformation:" << endl;
-    cout << "R = \n"
-         << R << endl;
-    cout << "t = \n"
-         << t.transpose() << endl;
+    // Apply final transformation to the source scan points
+    std::vector<Vector2d> transformed_source_scan;
+    for (const auto &point : source_scan)
+    {
+        transformed_source_scan.push_back(R * point + t);
+    }
+
+    // Visualize the results
+    viewer::viewTwoClouds(target_scan, transformed_source_scan);
 
     return 0;
 }

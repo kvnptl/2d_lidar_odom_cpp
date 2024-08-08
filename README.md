@@ -3,8 +3,9 @@
 This project implements 2D LiDAR odometry using the ICP (Iterative Closest Point) algorithm. It processes 2D LiDAR scans collected from a moving robot in a corridor. The project employs a KD-Tree based data structure for finding correspondences and offers a modular structure for the ICP algorithm, dataloader, and visualizer.
 
 <!-- TODO: Add if possible GIF of the ICP algorithm-->
-<div style="text-align: center;">
-    <img src="media/single_scan.png" alt="drawing" width="300"/>
+
+<div align="center">
+    <img src="media/single_scan.png" alt="drawing" width="400"/>
     <p><em>Figure 1: Single 2D LiDAR scan</em></p>
 </div>
 

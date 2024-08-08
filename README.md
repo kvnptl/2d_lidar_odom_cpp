@@ -50,7 +50,7 @@ This project implements 2D LiDAR odometry using the ICP (Iterative Closest Point
 
 1. Build the project (from the project root directory)
 
-- `cmake -Bbuild .` - Generates build system files in the build directory from the source code in the current directory
+- `cmake -Bbuild .` - Generates build system files in the build directory
 - `cmake --build build` - Compiles the project using the build system files in the build directory
 
 2. Run the project

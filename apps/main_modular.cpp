@@ -29,12 +29,12 @@ int main(int argc, char const *argv[])
     open3d::visualization::Visualizer visualizer;
     visualizer.CreateVisualizerWindow("Point Cloud Viewer", 800, 600);
 
-    double voxel_size = 0.1;
-    std::vector<Eigen::Vector2d> source_scan = voxelGridDownsample(pointcloud_set[0], voxel_size);
+    const double voxel_size = 0.1;
+    std::vector<Eigen::Vector2d> source_scan = icp::voxelGridDownsample(pointcloud_set[0], voxel_size);
 
     for (size_t scan_idx = 1; scan_idx < pointcloud_set.size() - 1 - 6000; ++scan_idx)
     {
-        std::vector<Eigen::Vector2d> target_scan = voxelGridDownsample(pointcloud_set[scan_idx], voxel_size);
+        std::vector<Eigen::Vector2d> target_scan = icp::voxelGridDownsample(pointcloud_set[scan_idx], voxel_size);
 
         std::cout << "[INFO] Processing scans " << scan_idx << " and " << scan_idx + 1 << std::endl;
 
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
 
         auto start_time = std::chrono::high_resolution_clock::now();
 
-        runICP(source_scan, target_scan, R, t);
+        icp::runICP(source_scan, target_scan, R, t);
 
         auto end_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end_time - start_time;
@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
         source_scan.insert(source_scan.end(), target_scan.begin(), target_scan.end());
 
         // Downsample the source scan
-        source_scan = voxelGridDownsample(source_scan, voxel_size);
+        source_scan = icp::voxelGridDownsample(source_scan, voxel_size);
 
         viewer::viewCloud(source_scan, visualizer);
 

@@ -21,6 +21,27 @@ namespace viewer
         {std::make_shared<open3d::geometry::PointCloud>(pointcloud)});
   }
 
+  // To view a point cloud continuously with a visualizer
+  void viewCloud(const std::vector<Eigen::Vector2d> &pcd, open3d::visualization::Visualizer &visualizer)
+  {
+    std::vector<Eigen::Vector3d> pts(pcd.size());
+    std::transform(pcd.cbegin(), pcd.cend(), pts.begin(), [](const auto &p)
+                   { return Eigen::Vector3d(p.x(), p.y(), 0.0); });
+
+    auto pointcloud = std::make_shared<open3d::geometry::PointCloud>(pts);
+    pointcloud->PaintUniformColor(Eigen::Vector3d(1.0, 0.0, 0.0)); // Red color
+
+    // Clear the visualizer and add new point cloud
+    visualizer.ClearGeometries();
+    visualizer.AddGeometry(pointcloud);
+
+    // Update the visualizer
+    visualizer.UpdateGeometry();
+    visualizer.PollEvents();
+    visualizer.UpdateRender();
+  }
+
+  // Visualize two point clouds
   void viewTwoClouds(const std::vector<Eigen::Vector2d> &pcd1, const std::vector<Eigen::Vector2d> &pcd2)
   {
     std::vector<Eigen::Vector3d> pts1(pcd1.size());
@@ -42,6 +63,7 @@ namespace viewer
          std::make_shared<open3d::geometry::PointCloud>(pointcloud2)});
   }
 
+  // To view two point clouds continuously with a visualizer
   void viewTwoClouds(const std::vector<Eigen::Vector2d> &pcd1, const std::vector<Eigen::Vector2d> &pcd2, open3d::visualization::Visualizer &visualizer)
   {
     std::vector<Eigen::Vector3d> pts1(pcd1.size());

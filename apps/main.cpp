@@ -4,6 +4,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -21,7 +22,7 @@ int main(int argc, char const *argv[])
     const std::string &filename(argv[1]);
 
     dataset::LaserScanDataset pointcloud_set(filename);
-    const size_t total_scans = pointcloud_set.size() - 1 - 6300;
+    const size_t total_scans = pointcloud_set.size() - 1;
     cout << "[INFO] Size of pointcloud set: " << total_scans << endl;
 
     Eigen::Matrix2d R_total = Eigen::Matrix2d::Identity();
@@ -31,10 +32,10 @@ int main(int argc, char const *argv[])
     int num_processed_scans = 0;
 
     // Create a visualizer
-    open3d::visualization::Visualizer visualizer;
-    visualizer.CreateVisualizerWindow("Point Cloud Viewer", 800, 600);
+    // open3d::visualization::Visualizer visualizer;
+    // visualizer.CreateVisualizerWindow("Point Cloud Viewer", 800, 600);
 
-    const double voxel_size = 0.1;
+    const double voxel_size = 0.2;
     std::vector<Eigen::Vector2d> source_scan = icp::downsample(pointcloud_set[0], voxel_size);
 
     for (size_t scan_idx = 1; scan_idx < total_scans; scan_idx++)
@@ -61,8 +62,7 @@ int main(int argc, char const *argv[])
 
         if (scan_idx % 10 == 0)
         {
-            cout << "[INFO] Avg ICP time: " << 1.0 / running_average_time << " Hz | "
-                 << "Progress: " << percentage_done << "%" << endl;
+            cout << "[INFO] Avg ICP time: " << std::fixed << std::setprecision(2) << 1.0 / running_average_time << " Hz | " << "Progress: " << percentage_done << "%" << endl;
         }
 
         // Accumulate the total transformation
@@ -82,13 +82,13 @@ int main(int argc, char const *argv[])
         // Downsample the source scan
         source_scan = icp::downsample(source_scan, voxel_size);
 
-        viewer::viewCloud(source_scan, visualizer);
+        // viewer::viewCloud(source_scan, visualizer);
 
         target_scan.clear();
     }
 
     // Destroy the visualizer window after the loop
-    visualizer.DestroyVisualizerWindow();
+    // visualizer.DestroyVisualizerWindow();
 
     // Output the final accumulated transformation
     cout << "[INFO] Final accumulated transformation:" << endl;

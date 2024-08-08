@@ -5,9 +5,32 @@ This project implements 2D LiDAR odometry using the ICP (Iterative Closest Point
 <!-- TODO: Add if possible GIF of the ICP algorithm-->
 
 <div align="center">
-    <img src="media/single_scan.png" alt="drawing" width="400"/>
+    <img src="media/single_scan.png" alt="drawing" width="300"/>
     <p><em>Figure 1: Single 2D LiDAR scan</em></p>
 </div>
+
+<table>
+  <tr>
+    <td>
+      <figure style="text-align: center;">
+        <img src="media/before_icp.png" alt="Image 1" width="600"/>
+        <em>
+        <figcaption style="text-align: center;">Figure 2: Before ICP</figcaption>
+        </em>
+      </figure>
+    </td>
+    <td>
+      <figure style="text-align: center;">
+        <img src="media/after_icp.png" alt="Image 2" width="600"/>
+        <em>
+        <figcaption style="text-align: center;">Figure 3: After ICP</figcaption>
+        </em>
+      </figure>
+    </td>
+  </tr>
+</table>
+
+
 
 ## Required Libraries
 

@@ -37,12 +37,14 @@ namespace icp
                 Eigen::Vector2d transformed_point = R * source_point + t;
                 Eigen::Vector2d nearest_target = tree.findNearest(transformed_point);
 
+                // Error for convergence check
                 double error = (transformed_point - nearest_target).norm();
                 errors.emplace_back(error);
 
                 double x_hat = transformed_point[0];
                 double y_hat = transformed_point[1];
 
+                // Jacobian
                 Eigen::Matrix<double, 2, 3> J;
                 J(0, 0) = 1;
                 J(0, 1) = 0;
@@ -51,13 +53,16 @@ namespace icp
                 J(1, 1) = 1;
                 J(1, 2) = x_hat;
 
+                // Error for optimization
                 Eigen::Vector2d e = transformed_point - nearest_target;
 
+                // Hessian and error vector
                 H += J.transpose() * J;
                 b += J.transpose() * e;
             }
 
-            const Eigen::Vector3d delta_x = H.ldlt().solve(-b);
+            // Solve linear system
+            const Eigen::Vector3d delta_x = H.ldlt().solve(-b); // More stable than H.inverse() * b
 
             const double delta_theta = delta_x[2];
             Eigen::Matrix2d delta_R;

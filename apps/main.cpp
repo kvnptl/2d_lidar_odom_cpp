@@ -42,8 +42,6 @@ int main(int argc, char const *argv[])
     {
         std::vector<Eigen::Vector2d> target_scan = icp::downsample(pointcloud_set[scan_idx], voxel_size);
 
-        // cout << "[INFO] Processing scans " << scan_idx << " and " << scan_idx + 1 << endl;
-
         // Start with identity rotation and zero translation
         Eigen::Matrix2d R = Eigen::Matrix2d::Identity();
         Eigen::Vector2d t = Eigen::Vector2d::Zero();
@@ -89,6 +87,8 @@ int main(int argc, char const *argv[])
 
     // Destroy the visualizer window after the loop
     // visualizer.DestroyVisualizerWindow();
+
+    // viewer::viewCloud(source_scan);
 
     // Output the final accumulated transformation
     cout << "[INFO] Final accumulated transformation:" << endl;

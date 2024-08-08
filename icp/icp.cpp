@@ -22,7 +22,7 @@ namespace icp
         kdtree::KDTree tree(target_scan);
 
         const int max_iterations = 50;
-        const double tolerance = 1e-6;
+        const double tolerance = 1e-4;
         double prev_error = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < max_iterations; iter++)

@@ -60,3 +60,10 @@ This project implements 2D LiDAR odometry using the ICP (Iterative Closest Point
 2. Run the project
 
 - `./build/apps/main .`
+
+### Troubleshooting Build Errors
+
+If you receive the error `/usr/bin/ld: warning: libc++.so.1, needed by ../../open3d/lib/libOpen3D.so, not found` while building, follow these steps:
+
+- Check the output of the terminal command `$ find /usr/lib -name "libc++.so.1"`. This command should print the path to libc++.
+- If libc++ is not found, run the script `install_deps.sh` (NOTE: ensure the script is executable)

@@ -1,3 +1,7 @@
+/*
+NOTE: This code was written with the help of Large Generative Models.
+*/
+
 #include "kdtree.hpp"
 #include <algorithm>
 #include <limits>
@@ -11,12 +15,14 @@ namespace kdtree
         delete right;
     }
 
+    // Recursive function to build the KDTree
     KDNode *KDTree::build(std::vector<Eigen::Vector2d>::iterator start, std::vector<Eigen::Vector2d>::iterator end, int depth)
     {
         if (start >= end)
             return nullptr;
 
         int axis = depth % 2;
+        // Sort points based on the current axis
         std::sort(start, end, [axis](const Eigen::Vector2d &a, const Eigen::Vector2d &b)
                   { return a[axis] < b[axis]; });
 

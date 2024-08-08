@@ -85,6 +85,7 @@ namespace icp
         }
     }
 
+    // NOTE: This function was written with the help of Large Generative Models.
     struct Vector2iHash
     {
         std::size_t operator()(const Eigen::Vector2i &v) const

@@ -22,6 +22,7 @@ namespace viewer
   }
 
   // To view a point cloud continuously with a visualizer
+  // NOTE: This function was written with the help of Large Generative Models.
   void viewCloud(const std::vector<Eigen::Vector2d> &pcd, open3d::visualization::Visualizer &visualizer)
   {
     std::vector<Eigen::Vector3d> pts(pcd.size());
@@ -64,6 +65,7 @@ namespace viewer
   }
 
   // To view two point clouds continuously with a visualizer
+  // NOTE: This function was written with the help of Large Generative Models.
   void viewTwoClouds(const std::vector<Eigen::Vector2d> &pcd1, const std::vector<Eigen::Vector2d> &pcd2, open3d::visualization::Visualizer &visualizer)
   {
     std::vector<Eigen::Vector3d> pts1(pcd1.size());

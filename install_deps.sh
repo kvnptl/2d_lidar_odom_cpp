@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Use: install_deps_ubuntu.sh [ assume-yes ]
+# Author: Saurabh Gupta (@saurabh1002)
 
 set -ev
 

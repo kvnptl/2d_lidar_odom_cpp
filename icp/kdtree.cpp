@@ -26,19 +26,23 @@ namespace kdtree
         std::sort(start, end, [axis](const Eigen::Vector2d &a, const Eigen::Vector2d &b)
                   { return a[axis] < b[axis]; });
 
+        // Find the median point
         auto mid = start + (end - start) / 2;
         KDNode *node = new KDNode(*mid);
+        // Recursively build the left and right subtrees
         node->left = build(start, mid, depth + 1);
         node->right = build(mid + 1, end, depth + 1);
 
         return node;
     }
 
+    // Recursive function to find the nearest neighbor
     void KDTree::nearest(KDNode *node, const Eigen::Vector2d &target, KDNode *&best, double &bestDist, int depth)
     {
         if (!node)
             return;
 
+        // Calculate squared distance from target to current node
         double dist = (node->point - target).squaredNorm();
         if (dist < bestDist)
         {
@@ -47,11 +51,15 @@ namespace kdtree
         }
 
         int axis = depth % 2;
+
+        // Determine which subtree to search first
         KDNode *near = target[axis] < node->point[axis] ? node->left : node->right;
         KDNode *far = target[axis] < node->point[axis] ? node->right : node->left;
 
+        // Search the nearer subtree
         nearest(near, target, best, bestDist, depth + 1);
 
+        // Check if we need to search the farther subtree
         double dx = target[axis] - node->point[axis];
         if (dx * dx < bestDist)
         {
@@ -70,6 +78,7 @@ namespace kdtree
         delete root;
     }
 
+    // Find the nearest neighbor to a target point
     Eigen::Vector2d KDTree::findNearest(const Eigen::Vector2d &target)
     {
         KDNode *best = nullptr;

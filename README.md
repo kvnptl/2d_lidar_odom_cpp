@@ -15,6 +15,8 @@ This project implements 2D LiDAR odometry using the ICP (Iterative Closest Point
 
 ## Project Structure
 
+> NOTE: Keep the all the binary files data in the `BINARY` folder
+
 ```plaintext
 |-- 2d_lidar_odom_cpp
 |   |-- apps

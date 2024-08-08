@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <vector>
 
+using std::cout;
+using std::endl;
+
 namespace icp
 {
     void runICP(
@@ -22,7 +25,7 @@ namespace icp
         const double tolerance = 1e-6;
         double prev_error = std::numeric_limits<double>::max();
 
-        for (int iter = 0; iter < max_iterations; ++iter)
+        for (int iter = 0; iter < max_iterations; iter++)
         {
             std::vector<double> errors;
             std::vector<Eigen::Matrix<double, 2, 3>> jacobians;
@@ -37,9 +40,8 @@ namespace icp
                 double error = (transformed_point - nearest_target).norm();
                 errors.emplace_back(error);
 
-                Eigen::Vector2d transformed_source = R * source_point + t;
-                double x_hat = transformed_source[0];
-                double y_hat = transformed_source[1];
+                double x_hat = transformed_point[0];
+                double y_hat = transformed_point[1];
 
                 Eigen::Matrix<double, 2, 3> J;
                 J(0, 0) = 1;
@@ -55,9 +57,9 @@ namespace icp
                 b += J.transpose() * e;
             }
 
-            Eigen::Vector3d delta_x = H.ldlt().solve(-b);
+            const Eigen::Vector3d delta_x = H.ldlt().solve(-b);
 
-            double delta_theta = delta_x[2];
+            const double delta_theta = delta_x[2];
             Eigen::Matrix2d delta_R;
             delta_R << std::cos(delta_theta), -std::sin(delta_theta),
                 std::sin(delta_theta), std::cos(delta_theta);
@@ -69,8 +71,8 @@ namespace icp
 
             if (std::abs(prev_error - mean_error) < tolerance)
             {
-                std::cout << "[INFO] Convergence achieved after " << iter + 1 << " iterations." << std::endl;
-                std::cout << "[INFO] Mean error = " << mean_error << std::endl;
+                // cout << "[INFO] Convergence achieved after " << iter + 1 << " iterations." << endl;
+                // cout << "[INFO] Mean error = " << mean_error << endl;
                 break;
             }
 
@@ -87,7 +89,7 @@ namespace icp
         }
     };
 
-    std::vector<Eigen::Vector2d> voxelGridDownsample(const std::vector<Eigen::Vector2d> &points, double voxel_size)
+    std::vector<Eigen::Vector2d> downsample(const std::vector<Eigen::Vector2d> &points, const double voxel_size)
     {
         std::unordered_map<Eigen::Vector2i, std::vector<Eigen::Vector2d>, Vector2iHash> voxel_map;
 
@@ -101,6 +103,7 @@ namespace icp
         }
 
         std::vector<Eigen::Vector2d> downsampled_points;
+        downsampled_points.reserve(voxel_map.size());
         for (const auto &voxel : voxel_map)
         {
             const auto &points_in_voxel = voxel.second;
@@ -112,6 +115,8 @@ namespace icp
             centroid /= static_cast<double>(points_in_voxel.size());
             downsampled_points.emplace_back(centroid);
         }
+
+        downsampled_points.shrink_to_fit();
 
         return downsampled_points;
     }

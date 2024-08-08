@@ -13,5 +13,5 @@ namespace icp
         Eigen::Matrix2d &R,
         Eigen::Vector2d &t);
 
-    std::vector<Eigen::Vector2d> voxelGridDownsample(const std::vector<Eigen::Vector2d> &points, double voxel_size);
+    std::vector<Eigen::Vector2d> downsample(const std::vector<Eigen::Vector2d> &points, double voxel_size);
 }
